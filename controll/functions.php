@@ -144,7 +144,7 @@ function add_personalizacao($evento_id, $personalizacao_bg, $personalizacao_logo
 
 if($f == 'retorno'){
     echo "*******************************";
-    --$_SESSION['etapa'];
+    $_SESSION['etapa']=1;
     header('Location: ../install/');
 }
 

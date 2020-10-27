@@ -30,7 +30,7 @@ $_SESSION['etapa'] =4;
 		<div class="row">
 			<!-- Sidebar -->
 			<div class="col-md-3">
-				<div class="sidebar">
+				<!-- <div class="sidebar">
 					<img src="../assets/img/logo_b.png" alt="">
 					<ul class="list-group">
 						<li class="list-group-item">
@@ -70,7 +70,7 @@ $_SESSION['etapa'] =4;
 							Mensagens
 						</li>
 					</ul>
-				</div>
+				</div> -->
 			</div>
 			
 			<!-- Campos -->
@@ -296,24 +296,24 @@ $_SESSION['etapa'] =4;
 								<label class="form-check-label" for="tipo_de_cadastro"><b>Habilitar Cadastro</b></label>
 								<input class="form-check-input" type="checkbox" id="tipo_de_cadastro" checked onchange="checkbox_fields('cadastro')">
 							</div>
-							<div class="row g-3" id="campos_mostrar_cadastro">
+							< class="row g-3" id="campos_mostrar_cadastro">
 								<hr>
 								<b>Selecione os campos para cadastro</b>
 								<div class="col-md-2">
 									<div class="form-check form-switch">
-										<input class="form-check-input" type="checkbox" id="cadastro_campo_nome" checked>
-										<label class="form-check-label" for="cadastro_campo_nome">Nome</label>
+										<input class="form-check-input" type="checkbox" id="campo_cadastro" checked onchange="checkbox_fields('nome');">
+										<label class="form-check-label" for="cadastro_campo_nome">Nome</label>																		
 									</div>
 								</div>
 								<div class="col-md-2">
 									<div class="form-check form-switch">
-										<input class="form-check-input" type="checkbox" id="cadastro_campo_sobrenome" checked>
+										<input class="form-check-input" type="checkbox" id="cadastro_campo_sobrenome" onchange="checkbox_fields('nome');" >
 										<label class="form-check-label" for="cadastro_campo_sobrenome">Sobrenome</label>
 									</div>
 								</div>
 								<div class="col-md-2">
 									<div class="form-check form-switch">
-										<input class="form-check-input" type="checkbox" id="cadastro_campo_email" onchange="exibe('cadastro_campo_email', 'campo_valida_email')" checked>
+										<input class="form-check-input" type="checkbox" id="cadastro_campo_email" onchange="exibe('cadastro_campo_uf_crm', 'campo_valida_crm')" checked>
 										<label class="form-check-label" for="cadastro_campo_email">Email</label>
 									</div>
 								</div>
@@ -394,12 +394,65 @@ $_SESSION['etapa'] =4;
 										<label class="form-check-label" for="valida_email">Validar E-mails Duplicados</label>
 									</div>
 								</div>
-							</div>
-							<div id="campos_oculto_cadastro">
-							</div>
-							
-						</div>
-						
+						<!-- Input dos Cadastrados-->
+								<hr>
+								<b>Preenchar  os campos para cadastro</b>
+								<div class="col-md-4" id="campos_mostrar_nome">
+									<div class="form-check form-switch">
+										<label class="form-check-label" for="campo_nome">Nome</label>
+										<input type="text" class="form-control" name="campo_nome" id="campo_nome">
+									</div>
+								</div>
+								<div class="col-md-4" id="campos_mostrar_sobrenome">
+									<div class="form-check form-switch">
+										<label class="form-check-label" for="cadastro_campo_sobrenome">Sobrenome</label>
+										<input type="text" class="form-control" name="cadastro_campo_sobrenome" id="cadastro_campo_sobrenome">
+									</div>
+								</div>
+								<div class="col-md-4" id="campos_mostrar_email">
+									<div class="form-check form-switch">
+										<label class="form-check-label" for="cadastro_campo_email">@email</label>
+										<input type="text" class="form-control" name="cadastro_campo_email" id="cadastro_campo_email">
+									</div>
+								</div>
+								<div class="col-md-4" id="campos_mostrar_email">
+									<div class="form-check form-switch">
+										<label class="form-check-label" for="cadastro_campo_telefone">Telefone</label>
+										<input type="text" class="form-control" name="cadastro_campo_telefone" id="cadastro_campo_telefone">
+									</div>
+								</div>
+								<div class="col-md-4" id="campos_mostrar_celular">
+									<div class="form-check form-switch">
+										<label class="form-check-label" for="cadastro_campo_celular">Celular</label>
+										<input type="text" class="form-control" name="cadastro_campo_celular" id="cadastro_campo_celular">
+									</div>
+								</div>
+								<div class="col-md-4" id="campos_mostrar_empresa">
+									<div class="form-check form-switch">
+										<label class="form-check-label" for="cadastro_campo_empresa">Empresa</label>
+										<input type="text" class="form-control" name="cadastro_campo_empresa" id="cadastro_campo_empresa">
+									</div>
+								</div>
+								<div class="col-md-4" id="campos_mostrar_cargo">
+									<div class="form-check form-switch">
+										<label class="form-check-label" for="cadastro_campo_cargo">Cargo</label>
+										<input type="text" class="form-control" name="cadastro_campo_cargo" id="cadastro_campo_cargo">
+									</div>
+								</div>
+								<div class="col-md-4" id="campos_mostrar_especialidade">
+									<div class="form-check form-switch">
+										<label class="form-check-label" for="cadastro_campo_especialidade">Especialidade</label>
+										<input type="text" class="form-control" name="cadastro_campo_especialidade" id="cadastro_campo_especialidade">
+									</div>
+								</div>
+								<div class="col-md-4" id="campos_mostrar_ufcrm">
+									<div class="form-check form-switch">
+										<label class="form-check-label" for="cadastro_campo_ufcrm">UfCRM</label>
+										<input type="text" class="form-control" name="cadastro_campo_ufcrm" id="cadastro_campo_ufcrm">
+									</div>
+								</div>
+							</div>												
+						</div>						
 						<?php 
 					} if($_SESSION['etapa'] == 5){?>
 						<!-- Login -->
