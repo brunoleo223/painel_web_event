@@ -116,6 +116,9 @@ if($etapa == 1){
 # Abre Etapa 2
 if($etapa == 2){
 
+   
+    
+    $evento_id = $_SESSION['evento_id'];   
     $get_convidados = get_convidados($evento_id);
     $_SESSION['list_convidados'] = array();
     $i = 0;
@@ -126,7 +129,7 @@ if($etapa == 2){
         }
     }
 
-    $evento_id = $_SESSION['evento_id'];
+    
     
     if(!isset($_GET['f'])){
         $f = "";
@@ -196,6 +199,11 @@ if($etapa == 2){
         $personalizacao_logo = $_FILES['personalizacao_logo'];
         $personalizacao_cor1 = mysqli_real_escape_string($link, $_POST['personalizacao_cor1']);
         $personalizacao_cor2 = mysqli_real_escape_string($link, $_POST['personalizacao_cor2']);
+
+
+
+        // var_dump($_SESSION);
+
         if((isset($_POST['tipo_de_convidados'])) && (count($_SESSION['list_convidados'])>0)){
             $tipo_de_convidados = mysqli_real_escape_string($link, $_POST['tipo_de_convidados']);
         } else {
@@ -205,12 +213,12 @@ if($etapa == 2){
         if($add_personalizacao == 1){
             if($retornar =="1"){
                 $_SESSION['etapa']=$_SESSION['etapa']-1;
-                $_SESSION['msg']=$_SESSION['etapa']."retornar";      
+                #$_SESSION['msg']=$_SESSION['etapa']."retornar";      
                 header('Location: ../install/');
             }
             else{
                 $_SESSION['etapa'] = 3;
-                unset($_SESSION['list_convidados']);
+                //unset($_SESSION['list_convidados']);
                 $evento_id = $_SESSION['evento_id'];
                 $insert_linha_configuracao = insert_linha_configuracao($evento_id);
             }           
