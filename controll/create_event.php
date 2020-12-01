@@ -96,7 +96,7 @@ if($etapa == 1){
             $_SESSION['msg']='Atribuindo ID';
         }else{            
              $evento_id=$_SESSION['evento_id'];
-             $_SESSION['msg']='Recuperando ID';
+             $_SESSION['msg']= $_SESSION['evento_id']."***".$evento_id;
              replace_evento($cliente_id, $evento_nome, $evento_data, $evento_hora, $evento_id);
         }
     }
@@ -114,22 +114,20 @@ if($etapa == 1){
 # Fecha Etapa 1
 // Adiciona convidados e personalização
 # Abre Etapa 2
-if($etapa == 2){
+if($etapa == 2){    
 
-   
-    
-    $evento_id = $_SESSION['evento_id'];   
+    $evento_id = $_SESSION['evento_id'];
+
     $get_convidados = get_convidados($evento_id);
     $_SESSION['list_convidados'] = array();
+    
     $i = 0;
     if ($get_convidados->num_rows > 0) {
         while($row = $get_convidados->fetch_assoc()) { 
             $_SESSION['list_convidados'][$i] = $row;
             $i++;
         }
-    }
-
-    
+    }    
     
     if(!isset($_GET['f'])){
         $f = "";
@@ -279,7 +277,9 @@ if($etapa == 3){
 }
 
 if($etapa == 4){
-    
+
+    $evento_id = $_SESSION['evento_id'];
+    if(isset($_POST['tipo_de_cadastro'])){
         $cadastro= new stdClass;    
         $cadastro->nome=isset($_POST['campo_nome'])?1:null;
         $cadastro->sobrenome= isset($_POST['campo_sobrenome'])?1:null;
@@ -290,8 +290,7 @@ if($etapa == 4){
         $cadastro->cargo= isset($_POST['campo_cargo'])?1:null;
         $cadastro->especialidade= isset($_POST['campo_especialidade'])?1:null;
         $cadastro->ufcrm= isset($_POST['campo_ufcrm'])?1:null;
-        $cadastro->senha= isset($_POST['campo_senha'])?1:null;
-        $evento_id = $_SESSION['evento_id'];
+        $cadastro->senha= isset($_POST['campo_senha'])?1:null;        
         
         if($cadastro->senha){
             $cadastro->senha_padrao= isset($_POST['senha_padrao'])?1:null;
@@ -313,7 +312,7 @@ if($etapa == 4){
             header('Location: ../install/');
         }else{                      
             foreach($cadastro as $propName => $propValue ){    
-                if (($propValue)){                
+                if (($propValue != null)){                
                     $_SESSION['etapa'] =5;
                     $_SESSION['invalid']=0;
                     $cadastroJson=json_encode($cadastro);
@@ -324,8 +323,19 @@ if($etapa == 4){
                 }
             }
         }
-
+    }else{
+        if($retornar =="1"){
+            $_SESSION['etapa']=$_SESSION['etapa']-1;
+            $_SESSION['msg']=$_SESSION['etapa']."retornar";      
+            header('Location: ../install/');
+        }else{                      
+            $_SESSION['etapa'] = 5;
+            $_SESSION['invalid'] = 0;
+            $cadastroJson = 0;
+            add_cadastro($evento_id, $cadastroJson); 
+        }
     }
+}
 
 if($etapa == 5){
     $evento_id = $_SESSION['evento_id'];
@@ -336,29 +346,37 @@ if($etapa == 5){
         $f = mysqli_real_escape_string($link, $_GET['f']);
     }
 
-    $login_campo_nome = isset($_POST['login_campo_nome']) ?'nome' : '';
-    $login_campo_sobrenome =isset($_POST['login_campo_sobrenome']) ? 'sobrenome' : '';
-    $login_campo_email = isset($_POST['login_campo_email']) ?  'email' : '';
-    $login_campo_telefone = isset($_POST['login_campo_telefone']) ?  'telefone' : '';
-    $login_campo_celular = isset($_POST['login_campo_celular']) ? 'celular' : '';
-    $login_campo_empresa = isset($_POST['login_campo_empresa']) ?  'empresa' : '';
-    $login_campo_cargo = isset($_POST['login_campo_cargo']) ?  'cargo' : '';
-    $login_campo_especialidade =isset($_POST['login_campo_especialidade']) ?  'especialidade' : '';
-    $login_campo_uf_crm = isset($_POST['login_campo_uf_crm']) ? 'UF_CRM' : '';
-    $campo_senha = isset($_POST['campo_senha']) ?  'senha' : '';
-    $campos_login = "$login_campo_nome, $login_campo_sobrenome, $login_campo_email, $login_campo_telefone, $login_campo_celular, $login_campo_empresa, $login_campo_cargo, $login_campo_especialidade, $login_campo_uf_crm, $campo_senha";
-    $add_login = add_login($evento_id, $campos_login);
+    $login_campo= new stdClass;
+    $login_campo->nome = isset($_POST['login_campo_nome']) ? 1 : null;
+    $login_campo->sobrenome =isset($_POST['login_campo_sobrenome']) ? 1 : null;
+    $login_campo->email = isset($_POST['login_campo_email']) ? 1 : null;
+    $login_campo->telefone = isset($_POST['login_campo_telefone']) ? 1 : null;
+    $login_campo->celular = isset($_POST['login_campo_celular']) ? 1 : null;
+    $login_campo->empresa = isset($_POST['login_campo_empresa']) ? 1 : null;
+    $login_campo->cargo = isset($_POST['login_campo_cargo']) ? 1 : null;
+    $login_campo->especialidade =isset($_POST['login_campo_especialidade']) ? 1 : null;
+    $login_campo->uf_crm = isset($_POST['login_campo_uf_crm']) ? 1 : null;
+    $login_campo->senha = isset($_POST['campo_senha']) ? 1 : null;
+    
     if($retornar =="1"){
         $_SESSION['etapa']=$_SESSION['etapa']-1;
         $_SESSION['msg']=$_SESSION['etapa']."retornar";      
         header('Location: ../install/');
     }else{ 
-        if(isset($_POST['login_campo_nome']) || isset($_POST['login_campo_sobrenome']) || isset($_POST['login_campo_email']) || isset($_POST['login_campo_telefone']) || isset($_POST['login_campo_celular']) || isset($_POST['login_campo_empresa']) || isset($_POST['login_campo_cargo']) || isset($_POST['login_campo_especialidade']) || isset($_POST['login_campo_uf_crm']) || isset($_POST['campo_senha'])){
-            $_SESSION['etapa'] = 6;
-        }else{
-            $_SESSION['invalid']= 1;
+        foreach($login_campo as $propLogin => $propValueLogin ){    
+            if (($propValueLogin != null)){                
+                $_SESSION['etapa'] =6;
+                $_SESSION['invalid']=0;
+                $loginJson=json_encode($login_campo);
+                $add_login = add_login($evento_id, $loginJson); 
+            }else{
+                $_SESSION['invalid']=1;
+                $_SESSION['etapa'] =5;
+            }
         }
-    }    
+    } 
+    
+    
 }
 
 if($etapa == 6){
