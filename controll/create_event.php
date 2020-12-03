@@ -198,8 +198,6 @@ if($etapa == 2){
         $personalizacao_cor1 = mysqli_real_escape_string($link, $_POST['personalizacao_cor1']);
         $personalizacao_cor2 = mysqli_real_escape_string($link, $_POST['personalizacao_cor2']);
 
-
-
         // var_dump($_SESSION);
 
         if((isset($_POST['tipo_de_convidados'])) && (count($_SESSION['list_convidados'])>0)){
@@ -244,9 +242,13 @@ if($etapa == 3){
     }
 
     $interacao_codigo = mysqli_real_escape_string($link, $_POST['interacao_codigo']);
+    $_SESSION['interacao_codigo']=$interacao_codigo;
     $transmissao_player1 = mysqli_real_escape_string($link, $_POST['transmissao_player1']);
+    $_SESSION['transmissao_player1']=$transmissao_player1;
     $transmissao_player2 = mysqli_real_escape_string($link, $_POST['transmissao_player2']);
+    $_SESSION['transmissao_player2']=$transmissao_player2;
     $transmissao_traducao = mysqli_real_escape_string($link, $_POST['transmissao_traducao']);
+    $_SESSION['transmissao_traducao']=$transmissao_traducao;
     $add_interacao_tranmissao = add_interacao($evento_id, $interacao_perguntas, $interacao_codigo);
     $add_transmissao = add_transmissao($evento_id, $transmissao_player1, $transmissao_player2, $transmissao_traducao);
     
@@ -282,28 +284,43 @@ if($etapa == 4){
     if(isset($_POST['tipo_de_cadastro'])){
         $cadastro= new stdClass;    
         $cadastro->nome=isset($_POST['campo_nome'])?1:null;
+        $_SESSION['campo_nome'] = $cadastro->nome;
         $cadastro->sobrenome= isset($_POST['campo_sobrenome'])?1:null;
+        $_SESSION['campo_sobrenome'] = $cadastro->sobrenome;
         $cadastro->email= isset($_POST['campo_email'])?1:null;
+        $_SESSION['campo_email'] = $cadastro->email;
         $cadastro->telefone= isset($_POST['campo_telefone'])?1:null;
+        $_SESSION['campo_telefone'] = $cadastro->telefone;
         $cadastro->celular= isset($_POST['campo_celular'])?1:null;
+        $_SESSION['campo_celular'] = $cadastro->celular;
         $cadastro->empresa=  isset($_POST['campo_empresa'])?1:null;
+        $_SESSION['campo_empresa'] = $cadastro->empresa;
         $cadastro->cargo= isset($_POST['campo_cargo'])?1:null;
+        $_SESSION['campo_cargo'] = $cadastro->cargo;
         $cadastro->especialidade= isset($_POST['campo_especialidade'])?1:null;
+        $_SESSION['campo_especialidade'] = $cadastro->especialidade;
         $cadastro->ufcrm= isset($_POST['campo_ufcrm'])?1:null;
-        $cadastro->senha= isset($_POST['campo_senha'])?1:null;        
+        $_SESSION['campo_ufcrm'] = $cadastro->ufcrm;
+        $cadastro->senha= isset($_POST['campo_senha'])?1:null; 
+        $_SESSION['campo_senha'] = $cadastro->senha;       
         
         if($cadastro->senha){
             $cadastro->senha_padrao= isset($_POST['senha_padrao'])?1:null;
+            $_SESSION['senha_padrao'] = $cadastro->senha_padrao;   
             $cadastro->senha_aleatoria= isset($_POST['senha_aleatoria'])?1:null;
+            $_SESSION['senha_aleatoria'] = $cadastro->senha_aleatoria;   
             $cadastro->senha_campo= isset($_POST['senha_campo'])?$_POST['senha_campo']:null;
+            $_SESSION['senha_campo'] = $cadastro->senha_campo;   
         }
 
         if($cadastro->ufcrm){
-            $cadastro->valida_crm= isset($_POST['valida_crm'])?1:null; 
+            $cadastro->valida_crm= isset($_POST['valida_crm'])?1:null;
+            $_SESSION['valida_crm'] = $cadastro->valida_crm; 
         }
 
         if($cadastro->email){
-            $cadastro->valida_email= isset($_POST['valida_email'])?1:null;    
+            $cadastro->valida_email= isset($_POST['valida_email'])?1:null;
+            $_SESSION['valida_email'] = $cadastro->valida_email;    
         }
 
         if($retornar =="1"){
@@ -348,6 +365,7 @@ if($etapa == 5){
 
     $login_campo= new stdClass;
     $login_campo->nome = isset($_POST['login_campo_nome']) ? 1 : null;
+    $_SESSION['login_campo_nome'] = $login_campo->nome;
     $login_campo->sobrenome =isset($_POST['login_campo_sobrenome']) ? 1 : null;
     $login_campo->email = isset($_POST['login_campo_email']) ? 1 : null;
     $login_campo->telefone = isset($_POST['login_campo_telefone']) ? 1 : null;
