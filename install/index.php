@@ -32,8 +32,6 @@ isset($_SESSION['transmissao_player1'])?$_SESSION['transmissao_player1']:$_SESSI
 isset($_SESSION['transmissao_player2'])?$_SESSION['transmissao_player2']:$_SESSION['transmissao_player2']='';
 isset($_SESSION['transmissao_traducao'])?$_SESSION['transmissao_traducao']:$_SESSION['transmissao_traducao']='';
 
-isset($_SESSION['login_campo_nome'])?$_SESSION['login_campo_nome']:$_SESSION['login_campo_nome']='';
-
 //Cadastro Hold
 isset($_SESSION['campo_nome'])?$_SESSION['campo_nome']:$_SESSION['campo_nome']='';
 isset($_SESSION['campo_sobrenome'])?$_SESSION['campo_sobrenome']:$_SESSION['campo_sobrenome']='';
@@ -50,6 +48,18 @@ isset($_SESSION['senha_aleatoria'])?$_SESSION['senha_aleatoria']:$_SESSION['senh
 isset($_SESSION['senha_campo'])?$_SESSION['senha_campo']:$_SESSION['senha_campo']='';
 isset($_SESSION['valida_crm'])?$_SESSION['valida_crm']:$_SESSION['valida_crm']='';
 isset($_SESSION['valida_email'])?$_SESSION['valida_email']:$_SESSION['valida_email']='';
+
+//Login Hold
+isset($_SESSION['login_campo_nome'])?$_SESSION['login_campo_nome']:$_SESSION['login_campo_nome']='';
+isset($_SESSION['login_campo_sobrenome'])?$_SESSION['login_campo_sobrenome']:$_SESSION['login_campo_sobrenome']='';
+isset($_SESSION['login_campo_email'])?$_SESSION['login_campo_email']:$_SESSION['login_campo_email']='';
+isset($_SESSION['login_campo_telefone'])?$_SESSION['login_campo_telefone']:$_SESSION['login_campo_telefone']='';
+isset($_SESSION['login_campo_celular'])?$_SESSION['login_campo_celular']:$_SESSION['login_campo_celular']='';
+isset($_SESSION['login_campo_empresa'])?$_SESSION['login_campo_empresa']:$_SESSION['login_campo_empresa']='';
+isset($_SESSION['login_campo_cargo'])?$_SESSION['login_campo_cargo']:$_SESSION['login_campo_cargo']='';
+isset($_SESSION['login_campo_especialidade'])?$_SESSION['login_campo_especialidade']:$_SESSION['login_campo_especialidade']='';
+isset($_SESSION['login_campo_uf_crm'])?$_SESSION['login_campo_uf_crm']:$_SESSION['login_campo_uf_crm']='';
+isset($_SESSION['login_campo_senha'])?$_SESSION['login_campo_senha']= null:$_SESSION['login_campo_senha']=null;
 
 if(isset($_SESSION['etapa'])){
 	echo "Evento ID".$_SESSION['evento_id'];
@@ -446,8 +456,8 @@ if(isset($_SESSION['etapa'])){
 								</div>
 								<div class="col-md-2">
 									<div class="form-check form-switch">
-										<input class="form-check-input" type="checkbox" name="campo_senha"  id="tipo_de_senha" onchange="checkbox_fields('senha');" c>
-										<label class="form-check-label" for="cadastro_campo_senha" >Senha</label>
+										<input class="form-check-input" type="checkbox" name="campo_senha"  id="tipo_de_senha" onchange="checkbox_fields('senha');" <?php if($_SESSION['campo_senha']=='1'){echo "checked"; }?>>
+										<label class="form-check-label" for="tipo_de_senha" >Senha</label>
 									</div>
 								</div>
 								<div class="row g-3" id="campos_mostrar_senha" style="display: none;">
@@ -499,6 +509,27 @@ if(isset($_SESSION['etapa'])){
 									$_SESSION['invalid']=0;
 								} 
 							?>
+							<?php 
+								if($_SESSION['etapa']==4 && $_SESSION['invalid']==2){																
+									echo "<script>var myToast = Toastify({
+									text: 'Preencha o campo de Senha',
+									duration: 5000
+									})
+									myToast.showToast();
+									</script>";
+									$_SESSION['invalid']=0;
+								} 
+							?>
+							<?php 
+								if($_SESSION['etapa']==4){																
+									echo "<script>var check = document.getElementById('tipo_de_senha');
+									var ocultar = document.getElementById('campos_mostrar_senha');									
+									if (check.checked == true){				
+										ocultar.style.display = 'flex';
+									}
+									</script>";
+								} 
+							?>
 						</div>
 											
 						<?php 
@@ -508,62 +539,62 @@ if(isset($_SESSION['etapa'])){
 							<h2 class="display-2">Login</h2>
 							<div class="col-md-2">
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" name="login_campo_nome" id="login_campo_nome" <?php if($_SESSION['login_campo_nome']=='1'){echo "checked"; }?>>
+									<input class="form-check-input" type="checkbox" name="login_campo_nome" id="login_campo_nome" <?php if($_SESSION['login_campo_nome']=='1'){echo "checked"; }else if($_SESSION['login_campo_nome']=='1'){echo " ";}else{echo "checked";}?>>
 									<label class="form-check-label" for="login_campo_nome">Nome</label>
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" name="login_campo_sobrenome" id="login_campo_sobrenome">
+									<input class="form-check-input" type="checkbox" name="login_campo_sobrenome" id="login_campo_sobrenome" <?php if($_SESSION['login_campo_sobrenome']=='1'){echo "checked"; }else if($_SESSION['login_campo_sobrenome']=='1'){echo " ";}else{echo "checked";}?>>
 									<label class="form-check-label" for="login_campo_sobrenome">Sobrenome</label>
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" name="login_campo_email" id="login_campo_email" checked>
+									<input class="form-check-input" type="checkbox" name="login_campo_email" id="login_campo_email" <?php if($_SESSION['login_campo_email']=='1'){echo "checked"; }?>>
 									<label class="form-check-label" for="login_campo_email">Email</label>
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" name="login_campo_telefone" id="login_campo_telefone">
+									<input class="form-check-input" type="checkbox" name="login_campo_telefone" id="login_campo_telefone" <?php if($_SESSION['login_campo_telefone']=='1'){echo "checked"; }?>>
 									<label class="form-check-label" for="login_campo_telefone">Telefone</label>
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" name="login_campo_celular" id="login_campo_celular">
+									<input class="form-check-input" type="checkbox" name="login_campo_celular" id="login_campo_celular" <?php if($_SESSION['login_campo_celular']=='1'){echo "checked"; }?>>
 									<label class="form-check-label" for="login_campo_celular">Celular</label>
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" name="login_campo_empresa" id="login_campo_empresa">
+									<input class="form-check-input" type="checkbox" name="login_campo_empresa" id="login_campo_empresa" <?php if($_SESSION['login_campo_empresa']=='1'){echo "checked"; }?>>
 									<label class="form-check-label" for="login_campo_empresa">Empresa</label>
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" name="login_campo_cargo" id="login_campo_cargo">
+									<input class="form-check-input" type="checkbox" name="login_campo_cargo" id="login_campo_cargo" <?php if($_SESSION['login_campo_cargo']=='1'){echo "checked"; }?>>
 									<label class="form-check-label" for="login_campo_cargo">Cargo</label>
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" name="login_campo_especialidade" id="login_campo_especialidade">
+									<input class="form-check-input" type="checkbox" name="login_campo_especialidade" id="login_campo_especialidade" <?php if($_SESSION['login_campo_especialidade']=='1'){echo "checked"; }?>>
 									<label class="form-check-label" for="login_campo_especialidade">Especialidade</label>
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" name="login_campo_uf_crm" id="login_campo_uf_crm" checked>
+									<input class="form-check-input" type="checkbox" name="login_campo_uf_crm" id="login_campo_uf_crm" <?php if($_SESSION['login_campo_uf_crm']=='1'){echo "checked"; }?>>
 									<label class="form-check-label" for="login_campo_uf_crm">UF e CRM</label>
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" name="campo_senha" id="flexSwitchCheckDefault" checked>
-									<label class="form-check-label" for="flexSwitchCheckDefault">Senha</label>
+									<input class="form-check-input" type="checkbox" name="login_campo_senha" id="login_campo_senha" <?php if($_SESSION['login_campo_senha']=='1'){echo "checked"; }?>>
+									<label class="form-check-label" for="login_campo_senha">Senha</label>
 								</div>
 							</div>
 							<?php 
