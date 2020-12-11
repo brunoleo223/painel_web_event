@@ -88,6 +88,15 @@ function get_convidados($evento_id){
     return $result;
 }
 
+// Pega linha da tabela config
+function get_config($evento_id){
+    require '../connect/connect.php';
+    $sql = "SELECT * FROM `configuracoes` WHERE lives_idlives = '$evento_id'";
+    $result = $link->query($sql);
+    
+    return $result;
+}
+
 // Adiciona convidado
 function add_convidado($evento_id, $convidados_nome, $convidados_curriculo, $convidados_bio, $convidados_foto){
     require '../connect/connect.php';
@@ -152,15 +161,24 @@ function add_personalizacao($evento_id, $personalizacao_bg, $personalizacao_logo
 }
 
 // Adiciona uma linha na tabela configuracao
-function insert_linha_configuracao($evento_id){
+function insert_linha_configuracao($evento_id, $result){
     require '../connect/connect.php';
-    #$sql="INSERT INTO `configuracoes` (`lives_idlives`, `perguntas`, `frame_chat`, `player1`, `player2`, `player_traducao`, `campos_cadastro`, `valida_crm`, `valida_email`, `tipo_senha`, `senha_padrao`, `campos_login`, `mensagem_cadastro`, `mensagem_reset_mail`) VALUES ('$evento_id', 0,'frame_chat','player1','player2','player_traducao',{},0,0,0,'senha_padrao','campos_login','mensagem_cadastro','mensagem_reset_mail')";
-    $sql="INSERT INTO `configuracoes` (`lives_idlives`, `perguntas`, `player1`) VALUES ('$evento_id', 0,'player1')";
-    if (mysqli_query($link, $sql)) {
-        return mysqli_insert_id($link);
-    } 
-    else {
-        return 0;
+    if($result->num_rows > 0){
+        $sql="UPDATE `configuracoes` SET lives_idlives = '$evento_id' , perguntas = 0, player1 = 'player1' WHERE lives_idlives = '$evento_id'";
+        if (mysqli_query($link, $sql)) {
+            return mysqli_insert_id($link);
+        } 
+        else {
+            return 0;
+        }
+    }else{
+        $sql="INSERT INTO `configuracoes` (`lives_idlives`, `perguntas`, `player1`) VALUES ('$evento_id', 0,'player1')";
+        if (mysqli_query($link, $sql)) {
+            return mysqli_insert_id($link);
+        } 
+        else {
+            return 0;
+        }
     }
 }
 
