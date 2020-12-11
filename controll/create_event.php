@@ -216,7 +216,8 @@ if($etapa == 2){
                 $_SESSION['etapa'] = 3;
                 //unset($_SESSION['list_convidados']);
                 $evento_id = $_SESSION['evento_id'];
-                $insert_linha_configuracao = insert_linha_configuracao($evento_id);
+                $result  = get_config($evento_id);
+                $insert_linha_configuracao = insert_linha_configuracao($evento_id, $result);
             }           
             
         }
@@ -407,24 +408,23 @@ if($etapa == 5){
     }else{
         $_SESSION['invalid']=1;
         $_SESSION['etapa'] =5;
-    }
-        
-    
-    
-    
+    }    
 }
 
 if($etapa == 6){
     $evento_id = $_SESSION['evento_id'];
     $texto_email_cadastro = mysqli_real_escape_string($link, $_POST['texto_email_cadastro']);
     $texto_email_nova_senha = mysqli_real_escape_string($link, $_POST['texto_email_nova_senha']);
-    add_mensagem($evento_id,$texto_email_cadastro,$texto_email_nova_senha);
-    if($retornar =="1"){
-        $_SESSION['etapa']=$_SESSION['etapa']-1;
-        $_SESSION['msg']=$_SESSION['etapa']."retornar";      
-        header('Location: ../install/');
-    }else{ 
+
+    if((strlen($texto_email_cadastro))>1 && (strlen($texto_email_nova_senha))>1 && $retornar != "1"){
         $_SESSION['etapa'] = 7;
+        add_mensagem($evento_id,$texto_email_cadastro,$texto_email_nova_senha);
+    }else if($retornar =="1"){
+        $_SESSION['etapa']=$_SESSION['etapa']-1;
+        $_SESSION['msg']=$_SESSION['etapa'];      
+        header('Location: ../install/');             
+    }else{
+        $_SESSION['invalid']=1;
     }
 };
 

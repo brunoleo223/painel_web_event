@@ -629,6 +629,17 @@ if(isset($_SESSION['etapa'])){
 								<textarea type="text" class="form-control" id="texto_email_nova_senha" name="texto_email_nova_senha" rows="5" required></textarea>
 							</div>
 						</div>
+						<?php 
+								if($_SESSION['etapa']==6 && $_SESSION['invalid']==1){																
+									echo "<script>var myToast = Toastify({
+									text: 'Preencha os campos',
+									duration: 5000
+									})
+									myToast.showToast();
+									</script>";
+									$_SESSION['invalid']=0;
+								} 
+							?>
 						
 						<?php
 					} ?>
