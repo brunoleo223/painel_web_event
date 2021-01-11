@@ -408,7 +408,7 @@ if($etapa == 5){
     }else{
         $_SESSION['invalid']=1;
         $_SESSION['etapa'] =5;
-    }    
+    }     
 }
 
 if($etapa == 6){
