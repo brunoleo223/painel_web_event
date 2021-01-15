@@ -144,7 +144,6 @@ if(isset($_SESSION['etapa'])){
 										</label>
 									</div>
 								</div>
-								<button class="btn btn-primary" type="submit" value="Reset" name="newClient">Adicionar Novo Cliente</button>
 							</div>
 														
 						</div>
@@ -166,7 +165,6 @@ if(isset($_SESSION['etapa'])){
 								<label for="evento_hora" class="form-label">Hora</label>
 								<input type="time" class="form-control" data-mask="00:00" name="evento_hora" id="evento_hora" required="true" value="<?php echo $_SESSION['evento_hora']?>">
 							</div>
-							<button class="btn btn-primary" type="" value="submit" name="newEvent">Adicionar Novo Evento</button>
 						</div>
 
 						<?php 
@@ -408,18 +406,18 @@ if(isset($_SESSION['etapa'])){
 									<b>Senha</b>
 									<div class="col-md-3 pt-1">
 										<div class="form-check form-switch">
-											<input class="form-check-input" type="checkbox"  name="senha_aleatoria" id="senha_aleatoria" onchange="nocheck('senha_aleatoria', 'tipo_de_senha_padrao', '1')" <?php if($_SESSION['senha_aleatoria']=='1'){echo "checked"; }?>>
+											<input class="form-check-input" type="checkbox"  name="senha_aleatoria" id="senha_aleatoria" onchange="checkbox_fields2('senha_padrao'); nocheck('senha_aleatoria', 'tipo_de_senha_padrao', '1')" <?php if($_SESSION['senha_aleatoria']=='1'){echo "checked"; }?>>
 											<label class="form-check-label" for="senha_aleatoria">Senha Aleatória</label>
 										</div>
 									</div>
 									<div class="col-md-auto pt-1">
 										<div class="form-check form-switch">
-											<input class="form-check-input" type="checkbox" name="senha_padrao" id="tipo_de_senha_padrao" onchange="checkbox_fields('senha_padrao'); nocheck('tipo_de_senha_padrao', 'senha_aleatoria', '1');" <?php if($_SESSION['senha_padrao']=='1'){echo "checked"; }else if($_SESSION['senha_padrao']=='1'){echo " ";}else{echo "checked";}?>>
+											<input class="form-check-input" type="checkbox" name="senha_padrao" id="tipo_de_senha_padrao" onchange="checkbox_fields('senha_padrao'); nocheck('tipo_de_senha_padrao', 'senha_aleatoria', '1');" <?php if($_SESSION['senha_padrao']=='1'){echo "checked";}?>>
 											<label class="form-check-label" for="senha_padrao" >Senha Padrão</label>
 										</div>
 									</div>
-									<div class="col-md-6" id="campos_mostrar_senha_padrao">
-										<input type="text" class="form-control" id="senha_do_evento" name="senha_campo" placeholder="Digite a senha" required <?php if($_SESSION['campo_senha']=='1'){echo "senha_campo"; }?>>
+									<div class="col-md-6" id="campos_mostrar_senha_padrao" <?php if($_SESSION['senha_padrao']!='1'){echo "style='display: none;'";}?>>
+										<input type="text" class="form-control" name="senha_campo" id="senha_do_evento" rows="2" value="<?php echo $_SESSION['senha_campo']?>">
 									</div>
 									<div id="campos_oculto_senha_padrao"></div>
 								</div>
@@ -564,12 +562,12 @@ if(isset($_SESSION['etapa'])){
 						<div id="campo_mensagens" class="row g-3">
 							<h2 class="display-2">Mensagens</h2>
 							<div class="col-md-12 pt-3">
-								<label for="texto_email_cadastro" class="form-label">Texto do e-mail de cadastro</label>
-								<textarea type="text" class="form-control" id="texto_email_cadastro" name="texto_email_cadastro" rows="5" required></textarea>
+								<label for="texto_email_cadastro" class="form-label">Texto do e-mail de cadastro*</label>
+								<input type="text" class="form-control" name="texto_email_cadastro" id="texto_email_cadastro" rows="5" required="" value="<?php echo $_SESSION['texto_email_cadastro']?>">
 							</div>
 							<div class="col-md-12 pt-3">
-								<label for="texto_email_nova_senha" class="form-label">Texto do e-mail de nova senha</label>
-								<textarea type="text" class="form-control" id="texto_email_nova_senha" name="texto_email_nova_senha" rows="5" required></textarea>
+								<label for="texto_email_nova_senha" class="form-label">Texto do e-mail de nova senha*</label>
+								<input type="text" class="form-control" name="texto_email_nova_senha" id="texto_email_nova_senha" rows="5" required="" value="<?php echo $_SESSION['texto_email_nova_senha']?>">
 							</div>
 						</div>
 						<?php 
@@ -772,7 +770,7 @@ if(isset($_SESSION['etapa'])){
 		function del_user(id){
 			$('#del_convidados_id').val(id);
 		}
-		
+
 		function nocheck(check1, check2, ocultar){
 			var check1 = document.getElementById(check1);
 			var check2 = document.getElementById(check2);
@@ -801,41 +799,70 @@ if(isset($_SESSION['etapa'])){
 				id_campo.style.display = "flex  ";
 			}
 		}
+		
 		function checkbox_fields(campo) {
-			var check = document.getElementById('tipo_de_'+campo);
-			var section = document.getElementById('campo_'+campo);
-			var ocultar = document.getElementById('campos_oculto_'+campo);
-			var mostrar = document.getElementById('campos_mostrar_'+campo);
+			let check = document.getElementById('tipo_de_'+campo);
+			let section = document.getElementById('campo_'+campo);
+			let ocultar = document.getElementById('campos_oculto_'+campo);
+			let mostrar = document.getElementById('campos_mostrar_'+campo);
 			if (check.checked == true){
 				
-				ocultar.style.display = "none";
-				inputs = ocultar.querySelectorAll('input, select');
-				for (index = 0; index < inputs.length; ++index) {
-					inputs[index].removeAttribute("required")
-				}
-				
+				ocultarNone(ocultar);				
 				mostrar.style.display = "flex";
 				inputs = mostrar.querySelectorAll('input, select');
 				for (index = 0; index < inputs.length; ++index) {
 					inputs[index].setAttribute("required", "required")
 				}
 				
-			} else {
+			} else {					
+				ocultarFlex(ocultar);
+				mostrarNone(mostrar);				
+			}
+		}
+
+		function checkbox_fields2(campo) {
+			let check = document.getElementById('tipo_de_'+campo);
+			let section = document.getElementById('campo_'+campo);
+			let ocultar = document.getElementById('campos_oculto_'+campo);
+			let mostrar = document.getElementById('campos_mostrar_'+campo);
+			if (check.checked == false){
 				
-				ocultar.style.display = "flex";
-				inputs = ocultar.querySelectorAll('input, select');
+				ocultarNone(ocultar);				
+				mostrar.style.display = "flex";
+				inputs = mostrar.querySelectorAll('input, select');
 				for (index = 0; index < inputs.length; ++index) {
 					inputs[index].setAttribute("required", "required")
 				}
 				
-				mostrar.style.display = "none";
-				inputs = mostrar.querySelectorAll('input, select');
-				for (index = 0; index < inputs.length; ++index) {
-					inputs[index].removeAttribute("required")
-				}
-				
+			} else {					
+				ocultarFlex(ocultar);
+				mostrarNone(mostrar);				
 			}
-		}		
+		}	
+
+		function ocultarNone(ocultar){
+			ocultar.style.display = "none";
+			inputs = ocultar.querySelectorAll('input, select');
+			for (index = 0; index < inputs.length; ++index) {
+				inputs[index].removeAttribute("required")
+			}
+		}
+
+		function ocultarFlex(ocultar){
+			ocultar.style.display = "flex";
+			inputs = ocultar.querySelectorAll('input, select');
+			for (index = 0; index < inputs.length; ++index) {
+				inputs[index].setAttribute("required", "required")
+			}
+		}
+
+		function mostrarNone(mostrar){
+			mostrar.style.display = "none";
+			inputs = mostrar.querySelectorAll('input, select');
+			for (index = 0; index < inputs.length; ++index) {
+				inputs[index].removeAttribute("required")
+			}
+		}	
 	</script>
 	
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>

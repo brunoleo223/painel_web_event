@@ -56,5 +56,9 @@ isset($_SESSION['login_campo_empresa'])?$_SESSION['login_campo_empresa']:$_SESSI
 isset($_SESSION['login_campo_cargo'])?$_SESSION['login_campo_cargo']:$_SESSION['login_campo_cargo']='';
 isset($_SESSION['login_campo_especialidade'])?$_SESSION['login_campo_especialidade']:$_SESSION['login_campo_especialidade']='';
 isset($_SESSION['login_campo_uf_crm'])?$_SESSION['login_campo_uf_crm']:$_SESSION['login_campo_uf_crm']='';
-isset($_SESSION['login_campo_senha'])?$_SESSION['login_campo_senha']= null:$_SESSION['login_campo_senha']=null;
+isset($_SESSION['login_campo_senha'])?$_SESSION['login_campo_senha']:$_SESSION['login_campo_senha']='';
+
+//mensagem hold
+isset($_SESSION['texto_email_cadastro'])?$_SESSION['texto_email_cadastro']:$_SESSION['texto_email_cadastro']='';
+isset($_SESSION['texto_email_nova_senha'])?$_SESSION['texto_email_nova_senha']:$_SESSION['texto_email_nova_senha']='';
 ?>

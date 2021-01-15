@@ -414,7 +414,9 @@ if($etapa == 5){
 if($etapa == 6){
     $evento_id = $_SESSION['evento_id'];
     $texto_email_cadastro = mysqli_real_escape_string($link, $_POST['texto_email_cadastro']);
+    $_SESSION['texto_email_cadastro']=$texto_email_cadastro;
     $texto_email_nova_senha = mysqli_real_escape_string($link, $_POST['texto_email_nova_senha']);
+    $_SESSION['texto_email_nova_senha']=$texto_email_nova_senha;
 
     if((strlen($texto_email_cadastro))>1 && (strlen($texto_email_nova_senha))>1 && $retornar != "1"){
         $_SESSION['etapa'] = 7;
@@ -426,6 +428,11 @@ if($etapa == 6){
     }else{
         $_SESSION['invalid']=1;
     }
+};
+
+if($etapa == 7){
+    // destroy the session
+    session_destroy();
 };
 
 header('Location: ../install/');
