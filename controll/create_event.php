@@ -236,9 +236,11 @@ if($etapa == 3){
 
     if(isset($_POST['interacao_perguntas'])){
         $interacao_perguntas = 1;
+        $_SESSION['interacao_perguntas']=1;
     }
     else{
         $interacao_perguntas = 0;
+        $_SESSION['interacao_perguntas']=0;
     }
 
     $interacao_codigo = mysqli_real_escape_string($link, $_POST['interacao_codigo']);
@@ -328,8 +330,10 @@ if($etapa == 4){
             $_SESSION['msg']=$_SESSION['etapa']."retornar";      
             header('Location: ../install/');
         }else if($cadastro->senha_padrao != 1){                      
-            foreach($cadastro as $propName => $propValue ){    
-                if (($propValue != null)){                
+            //foreach($cadastro as $propName => $propValue ){    
+                //if (($propValue == "1")){ 
+                if (isset($_POST['campo_nome']) || isset($_POST['campo_sobrenome']) || isset($_POST['campo_email']) || isset($_POST['campo_telefone']) || isset($_POST['campo_empresa']) || isset($_POST['campo_celular']) || isset($_POST['campo_cargo']) || isset($_POST['campo_especialidade']) || isset($_POST['campo_ufcrm']) || isset($_POST['campo_senha'])){     
+                    $_SESSION['msg']=$propValue;             
                     $_SESSION['etapa'] =5;
                     $_SESSION['invalid']=0;
                     $cadastroJson=json_encode($cadastro);
@@ -338,7 +342,7 @@ if($etapa == 4){
                     $_SESSION['invalid']=1;
                     $_SESSION['etapa'] =4;
                 }
-            }
+            //}
         }else{
             if($cadastro->senha_campo != null){
                 $_SESSION['etapa'] =5;

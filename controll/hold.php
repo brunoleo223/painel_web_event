@@ -23,6 +23,7 @@ isset($_SESSION['evento_hora'])?$_SESSION['evento_hora']:$_SESSION['evento_hora'
 
 //Interaction Hold
 isset($_SESSION['interacao_codigo'])?$_SESSION['interacao_codigo']:$_SESSION['interacao_codigo']='';
+isset($_SESSION['interacao_perguntas'])?$_SESSION['interacao_perguntas']:$_SESSION['interacao_perguntas']='';
 
 //Transmission Hold
 isset($_SESSION['transmissao_player1'])?$_SESSION['transmissao_player1']:$_SESSION['transmissao_player1']='';
