@@ -107,15 +107,25 @@ if(isset($_SESSION['etapa'])){
 								<div class="col-md-12">
 									<label for="cliente" class="form-label">Lista de Clientes*</label>
 									<select class="form-select" id="cliente" name="cliente_id" required="true">
-										<option selected disabled value="">Selecionar...</option>
+										<option selected disabled value="">Selecione...</option>
 										<?php
 											# Região de listagem da lista de dados
+											$idEvent = $_SESSION['evento_id'];
+											$sql2 = ("SELECT * from lives WHERE idlives = '$idEvent'");
+											$consultaIdCliente = mysqli_query($link,$sql2);
+											while($dadosClientes2=mysqli_fetch_array($consultaIdCliente)){
+												$idCli=$dadosClientes2[1];
+											}			
 											$sql=("SELECT nome,idclientes from clientes");
 											$consultaNome=mysqli_query($link,$sql);
 											while($dadosClientes=mysqli_fetch_array($consultaNome)){
 												$nome=$dadosClientes[0];
-												$idclient=$dadosClientes[1];												
-												echo "<option value=$idclient>".$nome."</option>";
+												$idclient=$dadosClientes[1];
+												if($idclient == $idCli){
+													echo "<option value='$idclient' selected>".$nome."</option>";	
+												}else{
+													echo "<option value='$idclient'>".$nome."</option>";
+												}												
 											}											
 										?>
 									</select>
@@ -144,11 +154,8 @@ if(isset($_SESSION['etapa'])){
 										</label>
 									</div>
 								</div>
-							</div>
-														
+							</div>														
 						</div>
-
-
 						
 						<!-- Evento -->
 						<div id="campo_evento" class="row g-3">
@@ -281,15 +288,15 @@ if(isset($_SESSION['etapa'])){
 						<div id="campo_interacao" class="row g-3">
 							<h2 class="display-2">Interação</h2>
 							<div class="form-check form-switch">
-								<input class="form-check-input" type="checkbox" name="interacao_perguntas" onchange="nocheck('interacao_perguntas', 'tipo_de_interacao', 'interacao');" id="interacao_perguntas">
+								<input class="form-check-input" type="checkbox" name="interacao_perguntas" onchange="nocheck('interacao_perguntas', 'tipo_de_interacao', 'interacao');" id="interacao_perguntas" <?php if($_SESSION['interacao_perguntas']=='1'){echo "checked"; }?>>
 								<label class="form-check-label" for="interacao_perguntas" >Perguntas</label>
 							</div>
 							<div class="form-check form-switch">
 								<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
 								<label class="form-check-label" for="tipo_de_interacao">Slido, Vevox, Vimeo, outros...*</label>
-								<input class="form-check-input" type="checkbox" name="tipo_de_interacao" id="tipo_de_interacao" checked onchange="checkbox_fields('interacao'); nocheck('tipo_de_interacao', 'interacao_perguntas');">
+								<input class="form-check-input" type="checkbox" name="tipo_de_interacao" id="tipo_de_interacao" onchange="checkbox_fields('interacao'); nocheck('tipo_de_interacao', 'interacao_perguntas');" <?php if($_SESSION['interacao_perguntas'] !='1'){echo "checked"; }?>>
 							</div>
-							<div class="row g-3" id="campos_mostrar_interacao">
+							<div class="row g-3" id="campos_mostrar_interacao" <?php if($_SESSION['interacao_perguntas']=='1'){echo "style='display: none;'";}else{echo "style='display: block;'";}?>>
 								<div class="col-md-12">
 									<label for="interacao_codigo" class="form-label">Código</label>
 									<input type="text" class="form-control" name="interacao_codigo" id="interacao_codigo" rows="5" required value="<?php echo $_SESSION['interacao_codigo']?>">
